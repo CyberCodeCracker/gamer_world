@@ -8,4 +8,5 @@ namespace gamer_world.Core.DTO
 {
     public record CategoryRequest
     (string Name, string Description);
+    public record UpdateCategoryRequest(string Name, string Description, int Id);
 }

@@ -66,5 +66,38 @@ namespace gamer_world.API.Controllers
 
             }
         }
+        [HttpPut("update-category")]
+        public async Task<IActionResult> updateCategory(UpdateCategoryRequest updateCategoryRequest)
+        {
+            try
+            {
+                var category = new Category()
+                {
+                    Name = updateCategoryRequest.Name,
+                    Description = updateCategoryRequest.Description,
+                    Id = updateCategoryRequest.Id
+                };
+                await work.CategoryRepository.UpdateAsync(category);
+                return Ok(new { message = "Category has been successfully updated!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("delete-category")]
+        public async Task<IActionResult> deleteCategory(int id)
+        {
+            try
+            {
+                await work.CategoryRepository.DeleteAsync(id);
+                return Ok(new { message = "Category has been successfully deleted!"});
+            } 
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
