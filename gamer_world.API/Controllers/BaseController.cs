@@ -1,4 +1,5 @@
-﻿using gamer_world.Core.Interfaces;
+﻿using AutoMapper;
+using gamer_world.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace gamer_world.API.Controllers
     public class BaseController : ControllerBase
     {
         protected readonly IUnitOfWork work;
+        protected readonly IMapper mapper;
 
-        public BaseController(IUnitOfWork work)
+        public BaseController(IUnitOfWork work, IMapper mapper)
         {
             this.work = work;
+            this.mapper = mapper;
         }
     }
 }

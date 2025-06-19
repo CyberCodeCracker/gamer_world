@@ -3,15 +3,16 @@ using gamer_world.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using gamer_world.Core.Entities.Product;
+using AutoMapper;
 
 namespace gamer_world.API.Controllers
 {
     public class CategoriesController : BaseController
     {
-        public CategoriesController(IUnitOfWork work) : base(work)
+        public CategoriesController(IUnitOfWork work, IMapper mapper) : base(work, mapper)
         {
-            
         }
+
         [HttpGet("get-all")]
         public async Task<IActionResult> get()
         {
@@ -52,11 +53,7 @@ namespace gamer_world.API.Controllers
         {
             try
             {
-                var category = new Category()
-                {
-                    Name = categoryRequest.Name,
-                    Description = categoryRequest.Description
-                };
+                var category = mapper.Map<Category>(categoryRequest);
                 await work.CategoryRepository.AddAsync(category);
                 return Ok(new { message = "Category has been successfully added!" });
 
@@ -71,12 +68,7 @@ namespace gamer_world.API.Controllers
         {
             try
             {
-                var category = new Category()
-                {
-                    Name = updateCategoryRequest.Name,
-                    Description = updateCategoryRequest.Description,
-                    Id = updateCategoryRequest.Id
-                };
+                var category = mapper.Map<Category>(updateCategoryRequest);
                 await work.CategoryRepository.UpdateAsync(category);
                 return Ok(new { message = "Category has been successfully updated!" });
             }

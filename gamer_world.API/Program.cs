@@ -1,4 +1,5 @@
 using gamer_world.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 namespace gamer_world.API
 {
     public class Program
@@ -14,7 +15,7 @@ namespace gamer_world.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.InfrastructureConfiguration(builder.Configuration);
-            
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 
