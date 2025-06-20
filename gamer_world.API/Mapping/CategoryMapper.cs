@@ -4,11 +4,11 @@ using gamer_world.Core.Entities.Product;
 
 namespace gamer_world.API.Mapping
 {
-    public class CategoryMapping : Profile
+    public class CategoryMapper : Profile
     {
-        public CategoryMapping()
+        public CategoryMapper()
         {
-            CreateMap<CategoryRequest, Category>().ReverseMap();
+            CreateMap<CategoryDTO, Category>().ReverseMap();
             CreateMap<UpdateCategoryRequest, Category>().ReverseMap();
         }
     }

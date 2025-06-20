@@ -8,23 +8,23 @@ using gamer_world.API.Helper;
 
 namespace gamer_world.API.Controllers
 {
-    public class CategoriesController : BaseController
+    public class CategoryController : BaseController
     {
-        public CategoriesController(IUnitOfWork work, IMapper mapper) : base(work, mapper)
+        public CategoryController(IUnitOfWork work, IMapper mapper) : base(work, mapper)
         {
         }
 
         [HttpGet("get-all")]
-        public async Task<IActionResult> get()
+        public async Task<IActionResult> getALlCategories()
         {
             try
             {
-                var category = await work.CategoryRepository.GetAllAsync();
-                if (category is null)
+                var categories = await work.CategoryRepository.GetAllAsync();
+                if (categories is null)
                 {
-                    return BadRequest(new ResponseAPI(400));
+                    return NotFound(new ResponseAPI(404));
                 }
-                return Ok(category);
+                return Ok(categories);
             }
             catch (Exception ex)
             {
@@ -46,11 +46,12 @@ namespace gamer_world.API.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
+
         [HttpPost("add-category")]
-        public async Task<IActionResult> addCategory(CategoryRequest categoryRequest)
+        public async Task<IActionResult> addCategory(CategoryDTO categoryRequest)
         {
             try
             {
@@ -64,6 +65,7 @@ namespace gamer_world.API.Controllers
 
             }
         }
+
         [HttpPut("update-category")]
         public async Task<IActionResult> updateCategory(UpdateCategoryRequest updateCategoryRequest)
         {
@@ -78,6 +80,7 @@ namespace gamer_world.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpDelete("delete-category")]
         public async Task<IActionResult> deleteCategory(int id)
         {
