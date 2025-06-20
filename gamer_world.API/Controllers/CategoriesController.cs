@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using gamer_world.Core.Entities.Product;
 using AutoMapper;
+using gamer_world.API.Helper;
 
 namespace gamer_world.API.Controllers
 {
@@ -21,7 +22,7 @@ namespace gamer_world.API.Controllers
                 var category = await work.CategoryRepository.GetAllAsync();
                 if (category is null)
                 {
-                    return NotFound();
+                    return BadRequest(new ResponseAPI(400));
                 }
                 return Ok(category);
             }
@@ -39,7 +40,7 @@ namespace gamer_world.API.Controllers
                 var category = await work.CategoryRepository.GetByIdAsync(id);
                 if (category is null)
                 {
-                    return NotFound();
+                    return BadRequest(new ResponseAPI(400, $"category not found id={id}"));
                 }
                 return Ok(category);
             }
@@ -55,7 +56,7 @@ namespace gamer_world.API.Controllers
             {
                 var category = mapper.Map<Category>(categoryRequest);
                 await work.CategoryRepository.AddAsync(category);
-                return Ok(new { message = "Category has been successfully added!" });
+                return Ok(new ResponseAPI(200, "Category has been added successfully!"));
 
             } catch (Exception ex)
             {
@@ -70,7 +71,7 @@ namespace gamer_world.API.Controllers
             {
                 var category = mapper.Map<Category>(updateCategoryRequest);
                 await work.CategoryRepository.UpdateAsync(category);
-                return Ok(new { message = "Category has been successfully updated!" });
+                return Ok(new ResponseAPI(200, "Category has been updated successfully!"));
             }
             catch (Exception ex)
             {
@@ -83,7 +84,7 @@ namespace gamer_world.API.Controllers
             try
             {
                 await work.CategoryRepository.DeleteAsync(id);
-                return Ok(new { message = "Category has been successfully deleted!"});
+                return Ok(new ResponseAPI(200, "Category has been deleted successfully!"));
             } 
             catch (Exception ex)
             {
