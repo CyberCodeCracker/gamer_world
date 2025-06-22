@@ -24,4 +24,8 @@
     <ProjectReference Include="..\gamer_world.Infrastructure\gamer_world.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,7 @@
 using gamer_world.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+
 namespace gamer_world.API
 {
     public class Program
@@ -8,18 +10,38 @@ namespace gamer_world.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // Add services to the container
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.InfrastructureConfiguration(builder.Configuration);
+
+            // Add AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // Add CORS policy (for dev, allow everything)
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
+            // Register PhysicalFileProvider for image access
+            builder.Services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
+                )
+            );
+
+            // Register infrastructure services
+            builder.Services.InfrastructureConfiguration(builder.Configuration);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -28,8 +50,10 @@ namespace gamer_world.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            // Use CORS
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

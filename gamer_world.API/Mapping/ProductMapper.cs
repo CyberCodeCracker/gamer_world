@@ -13,6 +13,15 @@ namespace gamer_world.API.Mapping
                 x => x.MapFrom(src => src.Category.Name))
                 .ReverseMap()
                 ;
+            CreateMap<AddProductDTO, Product>
+                ().ForMember(x => x.Photos, x => x.Ignore())
+                .ReverseMap()
+                ;
+            CreateMap<UpdateProductDTO, Product>
+                ().ForMember(x => x.Photos, x => x.Ignore())
+                .ReverseMap()
+                ;
+            
         }
     }
 }
